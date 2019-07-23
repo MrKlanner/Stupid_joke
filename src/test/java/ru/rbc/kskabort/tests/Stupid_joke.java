@@ -18,18 +18,15 @@ public class Stupid_joke {
     private static WebDriver driver;
     private boolean response;
     private boolean p;
-    private String NameOfTrottle = "Test";
-    private String DownSpeed = "20";
-    private String UploadSpeed = "20";
-    private String Latency = "7";
 
     @BeforeTest
-    public void setup() throws AWTException, InterruptedException {
+    public void setup() throws AWTException {
         System.setProperty("webdriver.chrome.driver", "D:/Users/Kosta/Documents/webdrivers/chrome_driver/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-        Just_for_trottling.SetTrottling(NameOfTrottle, DownSpeed, UploadSpeed, Latency, driver);
+        String NameOfProfile = "Test"; String DownSpeed = "20"; String UploadSpeed = "20"; String Latency = "7";
+        Just_for_trottling.SetTrottling(NameOfProfile, DownSpeed, UploadSpeed, Latency, driver);
     }
 
     @Test
@@ -57,9 +54,6 @@ public class Stupid_joke {
 
         /*var p = false;
         RA.repo.banner.addEventListener('creativeShow', function(){window.p = true; console.log("Is Banner are loading - "+p)}, 'right_1', null, 'dfp');*/
-
-
-
     }
 
     @AfterTest
