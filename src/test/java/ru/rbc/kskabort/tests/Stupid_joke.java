@@ -1,38 +1,43 @@
 package ru.rbc.kskabort.tests;
 
-import com.sun.org.apache.xml.internal.utils.res.StringArrayWrapper;
+import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.JavascriptExecutor;
+//import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.Command;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.Response;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import ru.rbc.kskabort.Just_for_trottling;
+import ru.rbc.kskabort.DriverSetting;
 
-import java.awt.*;
-import java.text.StringCharacterIterator;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Stupid_joke {
 
-    private static WebDriver driver;
+    private static ChromeDriver driver;
     private boolean response;
     private boolean p;
 
     @BeforeTest
-    public void setup() throws AWTException {
+    public void setup() throws IOException {
         System.setProperty("webdriver.chrome.driver", "D:/Users/Kosta/Documents/webdrivers/chrome_driver/chromedriver.exe");
-        driver = new ChromeDriver();
+        //driver = new ChromeDriver();
+        driver = DriverSetting.CreateDriver("spec", driver);
+        DriverSetting.SetNetConnection(50000, 50000, 5, driver);
         driver.manage().window().maximize();
         driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-        String NameOfProfile = "Test"; String DownSpeed = "20"; String UploadSpeed = "20"; String Latency = "7";
-        Just_for_trottling.SetTrottling(NameOfProfile, DownSpeed, UploadSpeed, Latency, driver);
     }
 
     @Test
     public void main_test()
     {
-        driver.get("https://test.rbc.ru");
+        driver.get("https://rbc.ru");
         JavascriptExecutor js = (JavascriptExecutor) driver;
         try {response = (boolean) js.executeScript("function T(placeName) {" +
                 "var ret = false;" +
@@ -44,7 +49,7 @@ public class Stupid_joke {
                 "return T(\"right_1\");");}
         catch (Exception c)
         {System.out.println(c);}
-        if (!response) {
+        if (response) {
             p = (boolean) js.executeAsyncScript("var p = false;" +
                     "RA.repo.banner.addEventListener('creativeShow', function(){window.p = true;}, 'right_1', null, 'dfp');"+
                     "return p");
